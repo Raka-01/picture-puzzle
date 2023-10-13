@@ -1,6 +1,7 @@
 package com.raka.picturepuzzle.main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,9 +17,10 @@ import javax.swing.JPanel;
 
 public class PicturePuzzle {
 
-	private JFrame frame; 
-	private JButton tileOne, tileTwo, tileThree, tileFour, tileFive, tileSix, tileSeven, tileEight, tileNine;
-	private Icon iconImage, iconOne, iconTwo, iconThree, iconFour, iconFive, iconSix, iconSeven, iconEight, iconNine;
+	private JFrame frame;
+	private JButton tileStar, tileOne, tileTwo, tileThree, tileFour, tileFive, tileSix, tileSeven, tileEight, tileNine;
+	private Icon iconImage, iconStar, iconOne, iconTwo, iconThree, iconFour, iconFive, iconSix, iconSeven, iconEight, iconNine;
+	private JButton instruction;
 	
 
 	/**
@@ -39,38 +41,57 @@ public class PicturePuzzle {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel headline = new JPanel();
+		headline.setBackground(Color.CYAN);
 		frame.getContentPane().add(headline, BorderLayout.NORTH);
-		
-		JLabel headLabel = new JLabel("Solve The Puzzle");
-		headline.add(headLabel);
 		
 		JButton previewImage = new JButton("Preview");
 		previewImage.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, iconImage, "PUzzle Preview", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null, iconImage, "Puzzle Preview", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		headline.add(previewImage);
 		
+		instruction = new JButton("Instructions");
+		instruction.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Icon rulesIcon = new ImageIcon("./resources/rules/rules.jpg");
+				JOptionPane.showMessageDialog(null, rulesIcon, "Puzzle Instructions", JOptionPane.PLAIN_MESSAGE);
+				
+			}
+		});
+		headline.add(instruction);
+		
 		JPanel puzzlePanel = new JPanel();
+		puzzlePanel.setBackground(Color.cyan);
 		frame.getContentPane().add(puzzlePanel, BorderLayout.CENTER);
 		
 		JPanel tilesPanel = new JPanel();
+		
+		JLabel headLabel = new JLabel("SOLVE THE PUZZLE");
 		GroupLayout gl_puzzlePanel = new GroupLayout(puzzlePanel);
 		gl_puzzlePanel.setHorizontalGroup(
 			gl_puzzlePanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_puzzlePanel.createSequentialGroup()
-					.addGap(72)
-					.addComponent(tilesPanel, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(134, Short.MAX_VALUE))
+					.addGroup(gl_puzzlePanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_puzzlePanel.createSequentialGroup()
+							.addGap(188)
+							.addComponent(headLabel))
+						.addGroup(gl_puzzlePanel.createSequentialGroup()
+							.addGap(90)
+							.addComponent(tilesPanel, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(99, Short.MAX_VALUE))
 		);
 		gl_puzzlePanel.setVerticalGroup(
 			gl_puzzlePanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_puzzlePanel.createSequentialGroup()
-					.addGap(53)
+					.addContainerGap()
+					.addComponent(headLabel)
+					.addGap(37)
 					.addComponent(tilesPanel, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(129, Short.MAX_VALUE))
+					.addContainerGap(75, Short.MAX_VALUE))
 		);
 		
 		initializeIcon();
@@ -116,10 +137,10 @@ public class PicturePuzzle {
 		tileEight.setIcon(iconEight);
 		tilesPanel.add(tileEight);
 		
-		tileNine = new JButton();
-		tileNine.setBounds(199, 199, 99, 99);
-		tileNine.setIcon(iconNine);
-		tilesPanel.add(tileNine);
+		tileStar = new JButton();
+		tileStar.setBounds(199, 199, 99, 99);
+		tileStar.setIcon(iconStar);
+		tilesPanel.add(tileStar);
 		
 		puzzlePanel.setLayout(gl_puzzlePanel);
 	}
@@ -135,5 +156,6 @@ public class PicturePuzzle {
 		iconSeven = new ImageIcon("./resources/images/tile7.jpg");
 		iconEight = new ImageIcon("./resources/images/tile8.jpg");
 		iconNine = new ImageIcon("./resources/images/tile9.jpg");
+		iconStar = new ImageIcon("./resources/images/star.jpg");
 	}
 }
