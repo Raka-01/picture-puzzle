@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -15,12 +18,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class PicturePuzzle {
+public class PicturePuzzle implements ActionListener {
 
 	private JFrame frame;
-	private JButton tileStar, tileOne, tileTwo, tileThree, tileFour, tileFive, tileSix, tileSeven, tileEight, tileNine;
+	private JButton tiles[];
 	private Icon iconImage, iconStar, iconOne, iconTwo, iconThree, iconFour, iconFive, iconSix, iconSeven, iconEight, iconNine;
 	private JButton instruction;
+	private List<Icon> icons;
 	
 
 	/**
@@ -43,6 +47,19 @@ public class PicturePuzzle {
 		JPanel headline = new JPanel();
 		headline.setBackground(Color.CYAN);
 		frame.getContentPane().add(headline, BorderLayout.NORTH);
+		
+		JButton restart = new JButton("Restart");
+		restart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Collections.shuffle(icons);
+				
+				for(int i = 0; i < tiles.length; i++) {
+					tiles[i].setIcon(icons.get(i));
+				}
+			}
+		});
+		headline.add(restart);
 		
 		JButton previewImage = new JButton("Preview");
 		previewImage.addActionListener(new ActionListener() {
@@ -93,56 +110,33 @@ public class PicturePuzzle {
 					.addComponent(tilesPanel, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(75, Short.MAX_VALUE))
 		);
+		puzzlePanel.setLayout(gl_puzzlePanel);
 		
 		initializeIcon();
 		tilesPanel.setLayout(null);
 		
-		tileOne = new JButton();
-		tileOne.setBounds(0, 0, 99, 99);
-		tileOne.setIcon(iconOne);
-		tilesPanel.add(tileOne);
+		icons = new ArrayList<Icon>();
+		icons.add(iconOne);
+		icons.add(iconTwo);
+		icons.add(iconThree);
+		icons.add(iconFour);
+		icons.add(iconFive);
+		icons.add(iconSix);
+		icons.add(iconSeven);
+		icons.add(iconEight);
+		icons.add(iconStar);
 		
-		tileTwo = new JButton();
-		tileTwo.setBounds(100, 0, 99, 99);
-		tileTwo.setIcon(iconTwo);
-		tilesPanel.add(tileTwo);
+		Collections.shuffle(icons);
 		
-		tileThree = new JButton();
-		tileThree.setBounds(199, 0, 99, 99);
-		tileThree.setIcon(iconThree);
-		tilesPanel.add(tileThree);
+		tiles = new JButton[icons.size()];
+		for(int i = 0; i < tiles.length; i++) {
+			tiles[i] = new JButton();
+			tiles[i].setBounds(((i%3)*100), ((i/3)*100), 99, 99);
+			tiles[i].addActionListener(this);
+			tiles[i].setIcon(icons.get(i));
+			tilesPanel.add(tiles[i]);
+		}
 		
-		tileFour = new JButton();
-		tileFour.setBounds(0, 100, 99, 99);
-		tileFour.setIcon(iconFour);
-		tilesPanel.add(tileFour);
-		
-		tileFive = new JButton();
-		tileFive.setBounds(100, 100, 99, 99);
-		tileFive.setIcon(iconFive);
-		tilesPanel.add(tileFive);
-		
-		tileSix = new JButton();
-		tileSix.setBounds(199, 100, 99, 99);
-		tileSix.setIcon(iconSix);
-		tilesPanel.add(tileSix);
-		
-		tileSeven = new JButton();
-		tileSeven.setBounds(0, 199, 99, 99);
-		tileSeven.setIcon(iconSeven);
-		tilesPanel.add(tileSeven);
-		
-		tileEight = new JButton();
-		tileEight.setBounds(100, 199, 99, 99);
-		tileEight.setIcon(iconEight);
-		tilesPanel.add(tileEight);
-		
-		tileStar = new JButton();
-		tileStar.setBounds(199, 199, 99, 99);
-		tileStar.setIcon(iconStar);
-		tilesPanel.add(tileStar);
-		
-		puzzlePanel.setLayout(gl_puzzlePanel);
 	}
 	
 	private void initializeIcon() {
@@ -157,5 +151,151 @@ public class PicturePuzzle {
 		iconEight = new ImageIcon("./resources/images/tile8.jpg");
 		iconNine = new ImageIcon("./resources/images/tile9.jpg");
 		iconStar = new ImageIcon("./resources/images/star.jpg");
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == tiles[0]) {
+			Icon tempIcon = tiles[0].getIcon();
+			if(tiles[1].getIcon() == iconStar) {
+				tiles[0].setIcon(iconStar);
+				tiles[1].setIcon(tempIcon);
+			}
+			if(tiles[3].getIcon() == iconStar) {
+				tiles[0].setIcon(iconStar);
+				tiles[3].setIcon(tempIcon);
+			}
+		}
+		else if(e.getSource() == tiles[1]) {
+			Icon tempIcon = tiles[1].getIcon();
+			if(tiles[0].getIcon() == iconStar) {
+				tiles[1].setIcon(iconStar);
+				tiles[0].setIcon(tempIcon);
+			}
+			if(tiles[2].getIcon() == iconStar) {
+				tiles[1].setIcon(iconStar);
+				tiles[2].setIcon(tempIcon);
+			}
+			if(tiles[4].getIcon() == iconStar) {
+				tiles[1].setIcon(iconStar);
+				tiles[4].setIcon(tempIcon);
+			}
+		}
+		else if(e.getSource() == tiles[2]) {
+			Icon tempIcon = tiles[2].getIcon();
+			if(tiles[1].getIcon() == iconStar) {
+				tiles[2].setIcon(iconStar);
+				tiles[1].setIcon(tempIcon);
+			}
+			if(tiles[5].getIcon() == iconStar) {
+				tiles[2].setIcon(iconStar);
+				tiles[5].setIcon(tempIcon);
+			}
+		}
+		else if(e.getSource() == tiles[3]) {
+			Icon tempIcon = tiles[3].getIcon();
+			if(tiles[0].getIcon() == iconStar) {
+				tiles[3].setIcon(iconStar);
+				tiles[0].setIcon(tempIcon);
+			}
+			if(tiles[4].getIcon() == iconStar) {
+				tiles[3].setIcon(iconStar);
+				tiles[4].setIcon(tempIcon);
+			}
+			if(tiles[6].getIcon() == iconStar) {
+				tiles[3].setIcon(iconStar);
+				tiles[6].setIcon(tempIcon);
+			}
+		}
+		else if(e.getSource() == tiles[4]) {
+			Icon tempIcon = tiles[4].getIcon();
+			if(tiles[1].getIcon() == iconStar) {
+				tiles[4].setIcon(iconStar);
+				tiles[1].setIcon(tempIcon);
+			}
+			if(tiles[3].getIcon() == iconStar) {
+				tiles[4].setIcon(iconStar);
+				tiles[3].setIcon(tempIcon);
+			}
+			if(tiles[5].getIcon() == iconStar) {
+				tiles[4].setIcon(iconStar);
+				tiles[5].setIcon(tempIcon);
+			}
+			if(tiles[7].getIcon() == iconStar) {
+				tiles[4].setIcon(iconStar);
+				tiles[7].setIcon(tempIcon);
+			}
+		}
+		else if(e.getSource() == tiles[5]) {
+			Icon tempIcon = tiles[5].getIcon();
+			if(tiles[2].getIcon() == iconStar) {
+				tiles[5].setIcon(iconStar);
+				tiles[2].setIcon(tempIcon);
+			}
+			if(tiles[4].getIcon() == iconStar) {
+				tiles[5].setIcon(iconStar);
+				tiles[4].setIcon(tempIcon);
+			}
+			if(tiles[8].getIcon() == iconStar) {
+				tiles[5].setIcon(iconStar);
+				tiles[8].setIcon(tempIcon);
+			}
+		}
+		else if(e.getSource() == tiles[6]) {
+			Icon tempIcon = tiles[6].getIcon();
+			if(tiles[3].getIcon() == iconStar) {
+				tiles[6].setIcon(iconStar);
+				tiles[3].setIcon(tempIcon);
+			}
+			if(tiles[7].getIcon() == iconStar) {
+				tiles[6].setIcon(iconStar);
+				tiles[7].setIcon(tempIcon);
+			}
+		}
+		else if(e.getSource() == tiles[7]) {
+			Icon tempIcon = tiles[7].getIcon();
+			if(tiles[4].getIcon() == iconStar) {
+				tiles[7].setIcon(iconStar);
+				tiles[4].setIcon(tempIcon);
+			}
+			if(tiles[6].getIcon() == iconStar) {
+				tiles[7].setIcon(iconStar);
+				tiles[6].setIcon(tempIcon);
+			}
+			if(tiles[8].getIcon() == iconStar) {
+				tiles[7].setIcon(iconStar);
+				tiles[8].setIcon(tempIcon);
+			}
+		}
+		else if(e.getSource() == tiles[8]) {
+			Icon tempIcon = tiles[8].getIcon();
+			if(tiles[5].getIcon() == iconStar) {
+				tiles[8].setIcon(iconStar);
+				tiles[5].setIcon(tempIcon);
+				checkPuzzleCompletion();
+			}
+			if(tiles[7].getIcon() == iconStar) {
+				tiles[8].setIcon(iconStar);
+				tiles[7].setIcon(tempIcon);
+				checkPuzzleCompletion();
+			}
+		}
+		
+	}
+
+	private void checkPuzzleCompletion() {
+		if(tiles[0].getIcon() == iconOne &&
+				tiles[1].getIcon() == iconTwo &&
+				tiles[2].getIcon() == iconThree &&
+				tiles[3].getIcon() == iconFour &&
+				tiles[4].getIcon() == iconFive &&
+				tiles[5].getIcon() == iconSix &&
+				tiles[6].getIcon() == iconSeven &&
+				tiles[7].getIcon() == iconEight) {
+			
+			tiles[8].setIcon(iconNine);
+			JOptionPane.showMessageDialog(null, "Congratulations, You won!");
+		}
+		
 	}
 }
